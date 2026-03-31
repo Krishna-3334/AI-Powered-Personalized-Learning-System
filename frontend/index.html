@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Powered Personalized Learning System</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>AI-Powered Personalized Learning System</h1>
+      <p class="subtitle">Enter your profile to get a personalized 3-day learning plan.</p>
+
+      <form id="profile-form" class="card">
+        <label>
+          Name
+          <input type="text" id="name" placeholder="Krishna" required />
+        </label>
+
+        <label>
+          Subject
+          <input type="text" id="subject" placeholder="Data Structures" required />
+        </label>
+
+        <label>
+          Goal
+          <input type="text" id="goal" placeholder="Crack coding interviews" required />
+        </label>
+
+        <label>
+          Current Level
+          <select id="level">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </label>
+
+        <label>
+          Learning Style
+          <select id="learning_style">
+            <option>Visual</option>
+            <option>Reading/Writing</option>
+            <option>Auditory</option>
+            <option>Kinesthetic</option>
+          </select>
+        </label>
+
+        <label>
+          Minutes Per Day
+          <input type="number" id="minutes_per_day" min="25" step="5" value="60" />
+        </label>
+
+        <button type="submit">Generate Plan</button>
+      </form>
+
+      <section id="result" class="card hidden"></section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
