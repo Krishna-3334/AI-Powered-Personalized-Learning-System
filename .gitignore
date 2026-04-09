@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 .DS_Store
 __pycache__/
 *.pyc
 .venv/
 backend/.venv/
+=======
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+.vscode/
+.env
+node_modules/
+>>>>>>> edb8b86 (Initial import: backend + frontend with video links for recommendations)

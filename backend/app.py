@@ -1,11 +1,25 @@
-from pathlib import Path
-
 from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
+from pathlib import Path
 
 
 app = Flask(__name__)
+CORS(app)
 
-FRONTEND_DIR = (Path(__file__).resolve().parent / ".." / "frontend").resolve()
+# Resolve frontend directory (sibling folder to backend)
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+
+
+@app.get("/")
+def serve_index():
+    """Serve the frontend index.html at the root so visiting / won't 404."""
+    return send_from_directory(str(FRONTEND_DIR), "index.html")
+
+
+@app.get("/<path:filename>")
+def serve_static(filename: str):
+    """Serve static frontend assets (js, css, images) from the frontend folder."""
+    return send_from_directory(str(FRONTEND_DIR), filename)
 
 
 def build_recommendations(profile: dict) -> list[dict]:
@@ -32,6 +46,14 @@ def build_recommendations(profile: dict) -> list[dict]:
 
     plan = []
     for i, topic in enumerate(topics, start=1):
+        # Provide a YouTube search URL for the topic so the frontend can
+        # show related videos. Using a search URL avoids requiring an API
+        # key or hard-coded video IDs while still surfacing relevant content.
+        from urllib.parse import quote_plus
+
+        query = quote_plus(f"{subject} {topic}")
+        video_search_url = f"https://www.youtube.com/results?search_query={query}"
+
         plan.append(
             {
                 "day": f"Day {i}",
@@ -40,6 +62,7 @@ def build_recommendations(profile: dict) -> list[dict]:
                 "recommended_activity": study_method,
                 "time_block_minutes": 25,
                 "blocks": session_blocks,
+                "video_search_url": video_search_url,
             }
         )
     return plan
@@ -48,16 +71,6 @@ def build_recommendations(profile: dict) -> list[dict]:
 @app.get("/health")
 def health():
     return jsonify({"status": "ok", "service": "personalized-learning-api"})
-
-
-@app.get("/")
-def index():
-    return send_from_directory(FRONTEND_DIR, "index.html")
-
-
-@app.get("/<path:filename>")
-def static_files(filename: str):
-    return send_from_directory(FRONTEND_DIR, filename)
 
 
 @app.post("/api/recommend")

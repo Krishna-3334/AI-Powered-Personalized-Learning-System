@@ -14,6 +14,7 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
+    // Use a relative path so the frontend works when served from the backend
     const response = await fetch("/api/recommend", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,6 +42,7 @@ function renderResult(data) {
         <p>Level: ${r.level}</p>
         <p>Activity: ${r.recommended_activity}</p>
         <p>Study Blocks: ${r.blocks} x ${r.time_block_minutes} mins</p>
+        ${r.video_search_url ? `<p><a href="${r.video_search_url}" target="_blank" rel="noopener">Watch related videos</a></p>` : ""}
       </div>
     `
     )
